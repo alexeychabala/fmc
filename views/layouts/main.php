@@ -37,7 +37,7 @@ AppAsset::register($this);
                         'options' => ['class' => 'navbar-nav navbar-right'],
                         'items' => [
 
-                            ['label' => 'CheckList', 'url' => ['/site/index']],
+                            ['label' => 'CheckList', 'url' => ['/checklist/index']],
                             ['label' => 'Cписок заявок', 'url' => ['/items/index']],
                             ['label' => 'Cоздать заявку', 'url' => ['/items/create']],
                             ['label' => 'Моя учетная запись', 'url' => ['/user/profile']],
@@ -59,7 +59,7 @@ AppAsset::register($this);
 
             NavBar::end();
 
-        if(Yii::$app->user->isGuest ) {
+        if(!Yii::$app->user->isGuest ) {
             NavBar::begin([
                 'options' => [
                     'class' => 'navbar-inverse navbar-admin',
@@ -77,11 +77,22 @@ AppAsset::register($this);
         }
 
         if(!Yii::$app->user->isGuest ){
-        echo Html::dropDownList('obj', 0,
-            Objects::getListAll(),
-            ['prompt' => Yii::t('app', 'Выберите...'), 'id'=>"obj", 'class'=>"form-control sel-obj"]
-        );
-        }?>
+        ?>
+
+        <?php
+        if(Yii::$app->request->post('obj')>0) {
+            $default_obj=Yii::$app->request->post('obj');
+        }else{
+            $default_obj=Yii::$app->request->cookies->get('default_obj');
+        }
+        echo Html::beginForm(array('site/index', 'id' => 10), 'post', array('enctype' => 'multipart/form-data'));
+        echo Html::dropDownList('obj', $default_obj,  Objects::getListAll(),  [ 'id'=>"obj", 'class'=>"form-control sel-obj", 'onchange'=>'this.form.submit()'] );
+        echo Html::endForm();
+        ?>
+
+        <?php
+        }
+        ?>
 
         <div class="container">
             <?php if(!Yii::$app->user->isGuest ){

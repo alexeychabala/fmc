@@ -43,11 +43,23 @@ $config = [
         'view' => [
             'theme' => [
                 'pathMap' => [
-                    '@dektrium/user/views' => '@app/views/users'
+                     'dektrium/user/views' => '@app/views/users'
                 ]
             ]
         ],
+        'urlManager'=>array(
+            'class' => 'yii\web\UrlManager',
+            // Disable index.php
+            'showScriptName' => false,
+            // Disable r= routes
+            'enablePrettyUrl' => true,
+            'rules' => array(
+                '<controller:\w+>/<id:\d+>' => '<controller>/view',
+                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+            ),
 
+        ),
     ],
 
     'params' => $params,
@@ -63,6 +75,9 @@ $config = [
             'class' => 'dektrium\rbac\Module',
         ],
     ],
+
+
+
 ];
 
 if (YII_ENV_DEV) {

@@ -45,12 +45,14 @@ class SiteController extends Controller
     public function actionIndex()
     {
 
-        $cookies = Yii::$app->response->cookies;
-        $cookies->add(new \yii\web\Cookie([
-            'name' => 'default_obj',
-            'value' => 'zh-CN',
-            'expire' => time() + 86400 * 365,
-        ]));
+        if(Yii::$app->request->post('obj')>0) {
+            $cookies = Yii::$app->response->cookies;
+            $cookies->add(new \yii\web\Cookie([
+                'name' => 'default_obj',
+                'value' => Yii::$app->request->post('obj'),
+                'expire' => time() + 86400 * 365,
+            ]));
+        }
 
         return $this->render('index');
     }

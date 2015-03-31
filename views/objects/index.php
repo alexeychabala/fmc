@@ -10,10 +10,7 @@ $this->title = 'Обьекты';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="objects-index">
-<?php
-$cookies = Yii::$app->request->cookies;
-echo $cookies->get('default_obj');
-?>
+
 
     <h1><?= Html::encode($this->title) ?></h1>
 
