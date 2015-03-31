@@ -1,6 +1,7 @@
 <?php
-
 $params = require(__DIR__ . '/params.php');
+$base='';
+if($_SERVER['SERVER_NAME']=='localhost'){$base='/fmc';};
 
 $config = [
     'id' => 'basic',
@@ -10,6 +11,7 @@ $config = [
     'bootstrap' => ['log'],
     'components' => [
         'request' => [
+            'baseUrl' => $base,
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'yXSpWQWpw-SBQGCL050uEGKDLaIZbis7',
         ],
