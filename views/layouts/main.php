@@ -85,13 +85,14 @@ AppAsset::register($this);
             ['prompt' => Yii::t('app', 'Выберите...'), 'id'=>"obj", 'class'=>"form-control sel-obj"]
         )  ?>
         <? }?>
-
+        <? if(!Yii::$app->user->isGuest ){?>
         <div class="container">
             <?= Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
             <?= $content ?>
         </div>
+        <? }?>
     </div>
 
     <footer class="footer">
