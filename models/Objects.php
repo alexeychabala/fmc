@@ -49,6 +49,7 @@ class Objects extends \yii\db\ActiveRecord
 
     public function getListAll()
     {
+
         $team = Objects::find()->orderBy('name')->all();
         return ArrayHelper::map($team, 'id', 'name');
     }

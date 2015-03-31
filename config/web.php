@@ -59,6 +59,9 @@ $config = [
             'cost' => 12,
             'admins' => ['admin'],
         ],
+        'rbac' => [
+            'class' => 'dektrium\rbac\Module',
+        ],
     ],
 ];
 

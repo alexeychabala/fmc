@@ -61,26 +61,30 @@ AppAsset::register($this);
         ?>
 
         <?php
-        NavBar::begin([
-            'options' => [
-                'class' => 'navbar-inverse navbar-admin',
-            ],
-        ]);
-        echo Nav::widget([
-            'options' => ['class' => 'navbar-nav navbar-right'],
-            'items' => [
-                ['label' => 'Список пользователей', 'url' => ['/user/admin']],
-                ['label' => 'Список объектов', 'url' => ['/objects/index']],
-            ],
-        ]);
+        if(Yii::$app->user->isGuest ) {
+            NavBar::begin([
+                'options' => [
+                    'class' => 'navbar-inverse navbar-admin',
+                ],
+            ]);
+            echo Nav::widget([
+                'options' => ['class' => 'navbar-nav navbar-right'],
+                'items' => [
+                    ['label' => 'Список пользователей', 'url' => ['/user/admin']],
+                    ['label' => 'Список объектов', 'url' => ['/objects/index']],
+                ],
+            ]);
 
-        NavBar::end();
+            NavBar::end();
+        }
         ?>
+
+        <? if(!Yii::$app->user->isGuest ){?>
         <?= Html::dropDownList('obj', 0,
             Objects::getListAll(),
             ['prompt' => Yii::t('app', 'Выберите...'), 'id'=>"obj", 'class'=>"form-control sel-obj"]
         )  ?>
-
+        <? }?>
 
         <div class="container">
             <?= Breadcrumbs::widget([

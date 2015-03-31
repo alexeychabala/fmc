@@ -44,12 +44,13 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        $cookie = new Cookie([
+
+        $cookies = Yii::$app->response->cookies;
+        $cookies->add(new \yii\web\Cookie([
             'name' => 'default_obj',
-            'value' => 'Me want cookie!',
+            'value' => 'zh-CN',
             'expire' => time() + 86400 * 365,
-        ]);
-        Yii::$app->getResponse()->getCookies()->add($cookie);
+        ]));
 
         return $this->render('index');
     }
