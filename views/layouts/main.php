@@ -59,7 +59,7 @@ AppAsset::register($this);
 
             NavBar::end();
         ?>
-
+        <? if(!Yii::$app->user->isGuest ){?>
         <?php
         if(Yii::$app->user->isGuest ) {
             NavBar::begin([
@@ -78,7 +78,7 @@ AppAsset::register($this);
             NavBar::end();
         }
         ?>
-
+        <? }?>
         <? if(!Yii::$app->user->isGuest ){?>
         <?= Html::dropDownList('obj', 0,
             Objects::getListAll(),
