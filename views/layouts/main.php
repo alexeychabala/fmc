@@ -58,9 +58,7 @@ AppAsset::register($this);
             }
 
             NavBar::end();
-        ?>
-        <? if(!Yii::$app->user->isGuest ){?>
-        <?php
+
         if(Yii::$app->user->isGuest ) {
             NavBar::begin([
                 'options' => [
@@ -77,21 +75,21 @@ AppAsset::register($this);
 
             NavBar::end();
         }
-        ?>
-        <? }?>
-        <? if(!Yii::$app->user->isGuest ){?>
-        <?= Html::dropDownList('obj', 0,
+
+        if(!Yii::$app->user->isGuest ){
+        echo Html::dropDownList('obj', 0,
             Objects::getListAll(),
             ['prompt' => Yii::t('app', 'Выберите...'), 'id'=>"obj", 'class'=>"form-control sel-obj"]
-        )  ?>
-        <? }?>
+        );
+        }?>
 
         <div class="container">
-            <? if(!Yii::$app->user->isGuest ){?>
-            <?= Breadcrumbs::widget([
-                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-            ]) ?>
-            <? }?>
+            <?php if(!Yii::$app->user->isGuest ){
+                echo Breadcrumbs::widget([
+                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                ]);
+            }
+            ?>
             <?= $content ?>
         </div>
 
@@ -100,7 +98,7 @@ AppAsset::register($this);
     <footer class="footer">
         <div class="container">
             <p class="pull-left">&copy; Shen <?= date('Y') ?></p>
-            <p class="pull-right"><?= Yii::powered() ?></p>
+            <p class="pull-right"></p>
         </div>
     </footer>
 
