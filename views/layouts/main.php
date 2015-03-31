@@ -51,7 +51,7 @@ AppAsset::register($this);
                 echo Nav::widget([
                     'options' => ['class' => 'navbar-nav navbar-right'],
                     'items' => [
-                        ['label' => 'Вход', 'url' => ['/site/login']],
+                        ['label' => 'Вход', 'url' => ['/user/login']],
                     ],
                 ]);
 
