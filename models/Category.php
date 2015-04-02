@@ -44,4 +44,21 @@ class Category extends \yii\db\ActiveRecord
             'name' => 'Name',
         ];
     }
+    public function getCatMain()
+    {
+
+        $cat = Category::find()->where(['parentid' => 0])->orderBy('name')->asArray()->all();
+        return $cat;
+    }
+
+    public function getCatChild($id)
+    {
+        $cat = Category::find()->where(['parentid' => $id])->orderBy('name')->asArray()->all();
+        return $cat;
+    }
+    public function getCatChildall()
+    {
+        $cat = Category::find()->where("parentid>0")->orderBy('parentid, name')->asArray()->all();
+        return $cat;
+    }
 }

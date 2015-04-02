@@ -41,6 +41,24 @@ class CheckListController extends Controller
         ]);
     }
 
+    public function actionUpdateval()
+    {
+        $id_user=Yii::$app->request->get('id_user');
+        $id_project=Yii::$app->request->get('id_project');
+        $id_list=Yii::$app->request->get('id');
+        $date=Yii::$app->request->get('date');
+        if($id_user){
+            if($id_project){
+                if($id_list){
+                    return CheckList::update_data($id_user, $id_project, $id_list, $date);
+                    //return 'OK'.$id_user."-".$id_project."-".$id_list."-".$date;
+                }
+            }
+        }
+
+
+
+    }
     /**
      * Displays a single CheckList model.
      * @param integer $id
