@@ -5,7 +5,7 @@ use app\models\Category;
 use app\models\CheckList;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-
+//
 $this->title = Yii::t('app', 'Check Lists');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
