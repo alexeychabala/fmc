@@ -78,18 +78,22 @@ AppAsset::register($this);
 
         if(!Yii::$app->user->isGuest ){
         ?>
-
+        <div class="bl-div">
         <?php
         if(Yii::$app->request->post('obj')>0) {
             $default_obj=Yii::$app->request->post('obj');
         }else{
             $default_obj=Yii::$app->request->cookies->get('default_obj');
         }
-        echo Html::beginForm(array('site/index', 'id' => 10), 'post', array('enctype' => 'multipart/form-data'));
+        echo Html::beginForm(array('site/index'), 'post', array('enctype' => 'multipart/form-data'));
         echo Html::dropDownList('obj', $default_obj,  Objects::getListAll(),  [ 'id'=>"obj", 'class'=>"form-control sel-obj", 'onchange'=>'this.form.submit()'] );
         echo Html::endForm();
-        ?>
+        if($default_obj){
+            echo Objects::getObjectInfo($default_obj);
+        }
 
+        ?>
+        </div>
         <?php
         }
         ?>

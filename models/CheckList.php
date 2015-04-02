@@ -53,4 +53,31 @@ class CheckList extends \yii\db\ActiveRecord
             'status' => 'Status',
         ];
     }
+
+    public function selectinfo($project_id, $date)
+    {
+        $ob = CheckList::find()->where(['id_project'=>$project_id,  'date'=>$date])->indexBy('id_list')->asArray()->all();
+        return $ob;
+    }
+
+    public function update_data($id_user, $id_project, $id_list, $date)
+    {
+         $ob = CheckList::find()->where(['id_list'=>$id_list, 'id_project'=>$id_project,  'date'=>$date])->asArray()->one();
+        if($ob['id']>0){
+            //$command = $connection->createCommand("UPDATE checklist SET id_list='".$id_list."', id_project='".$id_project."',  date='".$date."' WHERE userid=1");
+            //$command->execute();
+            Yii::$app->db->createCommand()->delete('checklist', 'id = '.$ob['id'])->execute();
+
+        }else{
+            Yii::$app->db->createCommand()->insert('checklist', [
+            'id_user' => $id_user,
+            'id_project' => $id_project,
+            'date' => $date,
+            'id_list' => $id_list,
+            'status' => 1,
+            ])
+            ->execute();
+        }
+        return 'test'.$ob['id'];
+    }
 }
