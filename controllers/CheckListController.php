@@ -74,7 +74,7 @@ class CheckListController extends Controller
     /**
      * Creates a new CheckList model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return mixed//
      */
     public function actionCreate()
     {

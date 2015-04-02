@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use app\models\Category;
 use app\models\CheckList;
+use \bootui\datetimepicker\Datepicker;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 //
@@ -23,8 +24,22 @@ $this->params['breadcrumbs'][] = $this->title;
     if($d!=date("d.m.Y")){
         $noedit=1;
     }
-    echo "<div style='color: red;' class='date'>".$d."</div>";
-    echo "<div class='selectdate'><input type='text' value=\"".$d."\" id='datepicker'>&nbsp;&nbsp;&nbsp;<a href='#' onclick=\"var d=$('#datepicker').val(); window.location='/checklist.php?d='+d; return false;\">Показать</a></div>";
+    ?>
+    <div style='color: red;' class='date'><?=$d;?></div>
+    <div class='selectdate'>
+        <?php
+        echo Datepicker::widget([
+            'name' => 'datepicker',
+            'id' => 'datepicker',
+            'value' => $d,
+            'attribute' => 'date',
+            'format' => 'DD.MM.YYYY',
+
+        ]);
+        ?>
+        <a href='#' onclick="var d=$('#datepicker').val(); window.location='<?=Yii::$app->urlManager->createUrl(['checklist/index']);?>?d='+d; return false;">Показать</a>
+    </div>
+    <?php
     $sel1=0;
     $sel2=0;
     $checkinput='';

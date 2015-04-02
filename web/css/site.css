@@ -128,3 +128,9 @@ h1{
     padding-right: 20px;
     line-height: 30px;
 }
+
+#datepicker{
+    width: 150px;
+    display: initial;
+    margin-bottom: 30px;
+}

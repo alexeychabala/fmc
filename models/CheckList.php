@@ -18,7 +18,7 @@ use Yii;
 class CheckList extends \yii\db\ActiveRecord
 {
     /**
-     * @inheritdoc
+     * @inheritdoc//
      */
     public static function tableName()
     {
