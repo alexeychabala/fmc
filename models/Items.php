@@ -58,14 +58,14 @@ class Items extends \yii\db\ActiveRecord
             'id_category' => 'Категория',
             'id_type' => 'Тип Заявки',
             'date_vipolneniya' => 'Когда работа должны быть выполнена?',
-           // 'date_create' => 'Date Create',
-            //'date_update' => 'Date Update',
-            //'status' => 'Status',
+            'date_create' => 'Дата создания',
+            'date_update' => 'Дата обновления',
+            'status' => 'Статус',
             //'id_coment' => 'Id Coment',
-            //'user_create' => 'User Create',
-            //'user_performer' => 'User Performer',
+            'user_create' => 'Создал',
+            'user_performer' => 'Назначен',
             //'user_dispetcher' => 'User Dispetcher',
-            //'id_object' => 'Id Object',
+            'id_object' => 'Обьект',
         ];
     }
 
@@ -76,9 +76,37 @@ class Items extends \yii\db\ActiveRecord
         return ArrayHelper::map($team, 'id', 'name');
     }
 
+    public function getCategoryName($id)
+    {
+        $team = Category::find()->where(['id' => $id])->asArray()->one();
+        return $team;
+    }
+    public function getTypeName($id)
+    {
+        $team = Type::find()->where(['id' => $id])->asArray()->one();
+        return $team;
+    }
     public function getTypeAll()
     {
         $team = Type::find()->orderBy('name')->all();
         return ArrayHelper::map($team, 'id', 'name');
     }
+
+    public function getObjName($id)
+    {
+        $team = Objects::find()->where(['id' => $id])->asArray()->one();
+        return $team;
+    }
+    public function getUserName($id)
+    {
+        $model = YII::$app->db->createCommand("SELECT * FROM user where id=$id");
+        $users = $model->queryOne();
+        return $users;
+    }
+    public function getStatusName($id)
+    {
+        $team = Status::find()->where(['id' => $id])->asArray()->one();
+        return $team;
+    }
+
 }

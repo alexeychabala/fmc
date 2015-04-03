@@ -48,8 +48,12 @@ class ItemsController extends Controller
      */
     public function actionView($id)
     {
+        $value=$this->findModel($id);
+        //echo "<pre>";
+        //print_r($value);
+        //exit;
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $value,
         ]);
     }
 
@@ -61,14 +65,45 @@ class ItemsController extends Controller
     public function actionCreate()
     {
         $model = new Items();
+        /*
+         *             'id' => 'ID',
+                    'name' => 'Суть',
+                    'description' => 'Подробности',
+                    'id_category' => 'Категория',
+                    'id_type' => 'Тип Заявки',
+                    'date_vipolneniya' => 'Когда работа должны быть выполнена?',
+                   // 'date_create' => 'Date Create',
+                    //'date_update' => 'Date Update',
+                    //'status' => 'Status',
+                    //'id_coment' => 'Id Coment',
+                    //'user_create' => 'User Create',
+                    //'user_performer' => 'User Performer',
+                    //'user_dispetcher' => 'User Dispetcher',
+                    //'id_object' => 'Id Object',
+         */
+        $obj = Yii::$app->request->cookies->get('default_obj');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+        if (!$obj->value) {
+            throw new NotFoundHttpException('Object not select');
         }
+        $data = Yii::$app->request->post();
+        if (isset($data['Items'])) {
+            $data['Items']['date_vipolneniya'] = strtotime($data['Items']['date_vipolneniya']);
+            $data['Items']['date_create'] = strtotime(date("Y-m-d H:i:s"));
+            $data['Items']['date_update'] = strtotime(date("Y-m-d H:i:s"));
+            $data['Items']['status'] = 1;
+            $data['Items']['user_create'] = Yii::$app->user->id;;
+            $data['Items']['id_object'] = $obj->value;
+        }
+
+            if ($model->load($data) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            }
+
     }
 
     /**

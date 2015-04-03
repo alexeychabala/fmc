@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\models\Items;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -16,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Yii::t('app', 'Создать заявку'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
+    <div class="listitems">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -31,21 +32,38 @@ $this->params['breadcrumbs'][] = $this->title;
                'contentOptions'=>['style'=>'max-width: 50px;']
             ],
             'name',
-            'id_category',
-            'id_type',
-            // 'date_vipolneniya',
-             'date_create',
-            // 'date_update',
-             'status',
-            // 'id_coment',
-            // 'user_create',
-            // 'user_performer',
-            // 'user_dispetcher',
-            // 'id_object',
+            [
+                'attribute' => 'id_category',
+                'value' => function ($model) { return Items::getCategoryName( $model->id_category)['name']; },
+            ],
+            [
+                'attribute' => 'id_type',
+                'value' => function ($model) { return Items::getTypeName( $model->id_type)['name']; },
+            ],
+            [
+                'attribute' => 'date_vipolneniya',
+                'value' => function ($model) { return $model->date_vipolneniya>0 ? date("d-m-Y", $model->date_vipolneniya):''; },
+                'label' => 'Дата выполнения',
+            ],
+            [
+                'attribute' => 'date_create',
+                'value' => function ($model) { return date("d-m-Y H:i:s", $model->date_create); },
+            ],
+
+            [
+                'attribute' => 'status',
+                'value' => function ($model) { return Items::getStatusName( $model->status)['name']; },
+            ],
+
+
+            [
+                'attribute' => 'user_performer',
+                'value' => function ($model) { return Items::getUserName( $model->user_performer)['username']; },
+            ],
 
             ['class' => 'yii\grid\ActionColumn',
              'template' => '{update}'],
         ],
     ]); ?>
-
+    </div>
 </div>

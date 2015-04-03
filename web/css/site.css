@@ -134,3 +134,11 @@ h1{
     display: initial;
     margin-bottom: 30px;
 }
+
+.listitems table th:nth-child(1),.listitems table td:nth-child(1){
+    width: 50px;
+}
+
+.listitems table th:nth-child(5),.listitems table td:nth-child(5){
+    width: 150px;
+}
