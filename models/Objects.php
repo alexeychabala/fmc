@@ -54,8 +54,15 @@ class Objects extends \yii\db\ActiveRecord
     }
 
     public function getObjectInfo($id)
-{
-    $ob = Objects::find()->where(['id' => $id])->one();
-    return $ob->description;
-}
+    {
+        $ob = Objects::find()->where(['id' => $id])->one();
+        return $ob->description;
+    }
+
+    public function getAllUser()
+    {
+        $model = YII::$app->db->createCommand("SELECT * FROM user where 1 order by username");
+        $users = $model->queryAll();
+        return $users;
+    }
 }

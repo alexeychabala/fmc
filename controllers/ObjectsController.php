@@ -3,11 +3,11 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Objects;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\Objects;
 
 /**
  * ObjectsController implements the CRUD actions for Objects model.
@@ -50,6 +50,7 @@ class ObjectsController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'users' => Objects::getAllUser(),
         ]);
     }
 
@@ -111,5 +112,12 @@ class ObjectsController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
 
-
+    protected function findModel($id)
+    {
+        if (($model = Objects::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
 }

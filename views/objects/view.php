@@ -33,5 +33,65 @@ $this->params['breadcrumbs'][] = $this->title;
             'description:ntext',
         ],
     ]) ?>
+    <h1>Пользователи назначенные обьекту</h1>
+    <table class="table table-striped table-bordered detail-view">
+        <tr>
+            <td>
+                Пользователи
+            </td>
+            <td>
+                Пользователи назначенные обьекту
+            </td>
+        </tr>
+        <tr>
+            <td class="tableinertd">
+                <table class="table table-striped table-bordered detail-view tableiner">
 
+                        <tr>
+                            <td>
+                                <a href="#">Добавить всех</a>
+                            </td>
+
+                        </tr>
+
+                </table>
+            </td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td class="tableinertd">
+                <table class="table table-striped table-bordered detail-view tableiner">
+                <?php
+                foreach($users as $user){
+?>
+                    <tr>
+                        <td>
+                            <?php echo $user['id']; ?>
+                        </td>
+                        <td>
+                            <?php echo $user['username']; ?>
+                        </td>
+                        <td>
+                            <?php echo $user['email']; ?>
+                        </td>
+                        <td>
+                            <a href="#" class="plus">+</a>
+                        </td>
+                    </tr>
+
+                <?php
+
+                }
+
+                ?>
+                </table>
+            </td>
+            <td>
+
+            </td>
+        </tr>
+
+    </table>
 </div>
