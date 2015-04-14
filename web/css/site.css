@@ -127,8 +127,11 @@ h1{
     padding-left: 20px;
     padding-right: 20px;
     line-height: 30px;
+    margin-top: 60px;
 }
-
+.admin-top {
+    margin-top: 10px!important;
+}
 #datepicker{
     width: 150px;
     display: initial;
@@ -158,9 +161,17 @@ h1{
 }
 .tableiner a.plus{
     color:#d43f3a;
-
 }
 .tableinertd{
     padding: 0px!important;
 
+}
+
+.col1, .col2{
+    width: 50%!important;
+}
+
+.blue{
+    background-color: rgb(87, 43, 249)!important;
+    color: rgb(240, 239, 239)!important;
 }

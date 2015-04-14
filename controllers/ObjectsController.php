@@ -51,9 +51,115 @@ class ObjectsController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
             'users' => Objects::getAllUser(),
+            'categorys' => Objects::getCategorys(),
         ]);
     }
 
+    public function actionListobjectusers()
+    {
+        $id_project=Yii::$app->request->get('id_project');
+        if($id_project){
+           $result="<table class=\"table table-striped table-bordered detail-view tableiner\">";
+            foreach(Objects::getObjectUser($id_project) as $user){
+                $result.="<tr><td>".$user['id']."</td> <td>".$user['username']."</td><td>".$user['email']."</td><td> <a href=\"#\" class\"plus\" onclick=\"deleteuser(".$user['id'].");return false;\">Удалить</a></td></tr>";
+            }
+            $result.="</table>";
+            return  $result;
+        }
+
+    }
+
+    public function  actionAddobjectusers()
+    {
+        $id_project=Yii::$app->request->get('id_project');
+        $id=Yii::$app->request->get('id');
+        if($id_project){
+          if($id) {
+              return Objects::addObjectUser($id_project, $id);
+          }
+        }
+
+    }
+
+    public function  actionAddallobjectusers()
+    {
+        $id_project=Yii::$app->request->get('id_project');
+        //$id=Yii::$app->request->get('id');
+        if($id_project){
+            return Objects::addAllObjectUser($id_project);
+        }
+
+    }
+
+    public function  actionDeleteobjectusers()
+    {
+        $id_project=Yii::$app->request->get('id_project');
+        $id=Yii::$app->request->get('id');
+        if($id_project){
+            if($id) {
+                return Objects::deleteObjectUser($id_project, $id);
+            }
+        }
+
+    }
+
+
+    public function actionListobjectob()
+    {
+        $id_project=Yii::$app->request->get('id_project');
+        if($id_project){
+            $result="<table class=\"table table-striped table-bordered detail-view tableiner\">";
+                $obs=Objects::getObjectob($id_project);
+                $childs=$obs;
+            foreach( $obs as $ob){
+                if ($ob['parentid'] == 0) {
+                    $result .= "<tr class='blue'><td>" . $ob['id'] . "</td> <td>" . $ob['name'] . "</td><td> <a href=\"#\" class\"plus\" onclick=\"deleteob(" . $ob['id'] . ");return false;\">Удалить</a></td></tr>";
+                }
+                foreach($childs as $categorych) {
+                    if ($categorych['parentid'] == $ob['id']) {
+                        $result .= "<tr><td>" . $categorych['id'] . "</td> <td>" . $categorych['name'] . "</td><td> <a href=\"#\" class\"plus\" onclick=\"deleteob(" . $categorych['id'] . ");return false;\">Удалить</a></td></tr>";
+                    }
+                }
+            }
+            $result.="</table>";
+            return  $result;
+        }
+
+    }
+
+    public function  actionAddobjectob()
+    {
+        $id_project=Yii::$app->request->get('id_project');
+        $id=Yii::$app->request->get('id');
+        if($id_project){
+            if($id) {
+                return Objects::addObjectob($id_project, $id);
+            }
+        }
+
+    }
+
+    public function  actionAddallobjectob()
+    {
+        $id_project=Yii::$app->request->get('id_project');
+        //$id=Yii::$app->request->get('id');
+        if($id_project){
+            return Objects::addAllObjectob($id_project);
+        }
+
+    }
+
+    public function  actionDeleteobjectobs()
+    {
+        $id_project=Yii::$app->request->get('id_project');
+        $id=Yii::$app->request->get('id');
+        if($id_project){
+            if($id) {
+                return Objects::deleteObjectob($id_project, $id);
+            }
+        }
+
+    }
     /**
      * Creates a new Objects model.
      * If creation is successful, the browser will be redirected to the 'view' page.

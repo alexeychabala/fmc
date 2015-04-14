@@ -6,7 +6,7 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use app\models\ContactForm;
-
+use app\models\Objects;
 class SiteController extends Controller
 {
     public function behaviors()
@@ -53,7 +53,17 @@ class SiteController extends Controller
                 'expire' => time() + 86400 * 365,
             ]));
         }
-
+        if(!Yii::$app->request->cookies->get('default_obj')>0){
+            $id=Objects::getObjectCurUser(Yii::$app->user->id);
+            if($id>0){
+                $cookies = Yii::$app->response->cookies;
+                $cookies->add(new \yii\web\Cookie([
+                    'name' => 'default_obj',
+                    'value' => $id,
+                    'expire' => time() + 86400 * 365,
+                ]));
+            }
+        }
         return $this->render('index');
     }
 

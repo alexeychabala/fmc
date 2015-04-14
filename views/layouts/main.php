@@ -41,8 +41,8 @@ AppAsset::register($this);
                             ['label' => 'Cписок заявок', 'url' => ['/items/index']],
                             ['label' => 'Cоздать заявку', 'url' => ['/items/create']],
                             ['label' => 'Моя учетная запись', 'url' => ['/user/profile']],
-                            ['label' => 'Выход (' . Yii::$app->user->identity->username . ')',
-                                'url' => ['/site/logout'],
+                            ['label' => 'Выход ('.Yii::$app->user->identity->username . ')',
+                                'url' => ['/user/logout'],
                                 'linkOptions' => ['data-method' => 'post']],
                     ],
                 ]);
@@ -59,7 +59,7 @@ AppAsset::register($this);
 
             NavBar::end();
 
-        if(!Yii::$app->user->isGuest ) {
+        if(Yii::$app->user->identity->id_access_level==90) {
             NavBar::begin([
                 'options' => [
                     'class' => 'navbar-inverse navbar-admin',
@@ -76,9 +76,10 @@ AppAsset::register($this);
             NavBar::end();
         }
 
-        if(!Yii::$app->user->isGuest ){
+        if(Yii::$app->user->identity->id_access_level>0){
         ?>
-        <div class="bl-div">
+        <div class="bl-div <?php if(Yii::$app->user->identity->id_access_level==90) {echo " admin-top";}?>">
+
         <?php
         if(Yii::$app->request->post('obj')>0) {
             $default_obj=Yii::$app->request->post('obj');
@@ -86,7 +87,7 @@ AppAsset::register($this);
             $default_obj=Yii::$app->request->cookies->get('default_obj');
         }
         echo Html::beginForm(array('site/index'), 'post', array('enctype' => 'multipart/form-data'));
-        echo Html::dropDownList('obj', $default_obj,  Objects::getListAll(),  [ 'id'=>"obj", 'class'=>"form-control sel-obj", 'onchange'=>'this.form.submit()'] );
+        echo Html::dropDownList('obj', $default_obj,  Objects::getListAll(Yii::$app->user->id),  [ 'id'=>"obj", 'class'=>"form-control sel-obj", 'onchange'=>'this.form.submit()'] );
         echo Html::endForm();
         if($default_obj){
             echo Objects::getObjectInfo($default_obj);
@@ -99,7 +100,7 @@ AppAsset::register($this);
         ?>
 
         <div class="container">
-            <?php if(!Yii::$app->user->isGuest ){
+            <?php if(Yii::$app->user->identity->id_access_level>0){
                 echo Breadcrumbs::widget([
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 ]);

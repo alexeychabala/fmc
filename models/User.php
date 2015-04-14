@@ -6,6 +6,7 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
 {
     public $id;
     public $username;
+    public $id_access_level;
     public $password;
     public $authKey;
     public $accessToken;
