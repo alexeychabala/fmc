@@ -174,3 +174,27 @@ h1{
     background-color: rgb(87, 43, 249)!important;
     color: rgb(240, 239, 239)!important;
 }
+
+.send{
+    margin: 20px 0 20px 0;
+
+}
+.addlast{
+    font-size: 12px;
+    position: absolute;
+    top: 10px;
+    left: 615px;
+}
+
+.sendform{
+    background-color: rgb(244, 244, 244);
+    border-radius: 3px;
+    padding: 10px;
+    position: relative;
+    width: 800px;
+}
+.sendform textarea{
+    width: 770px;
+    margin-top: 5px;
+    border-radius: 3px;
+}

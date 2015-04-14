@@ -6,6 +6,7 @@ use \bootui\datetimepicker\Datepicker;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 //
+isset(Yii::$app->user->identity->id_access_level)?$id_access_level=Yii::$app->user->identity->id_access_level:$id_access_level='';
 $this->title = Yii::t('app', 'Check Lists');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -20,11 +21,13 @@ $this->params['breadcrumbs'][] = $this->title;
     }else{
         $d=date("d.m.Y");
     }
-    if($d!=date("d.m.Y")){
+
+    if($d!=date("d.m.Y") or $id_access_level!=90){
         $noedit=1;
     }
+    //echo $noedit;
     ?>
-    <div style='color: red;' class='date'><?=$d;?></div>
+    <div class='date'><?=$d;?></div>
     <div class='selectdate'>
         <?php
         echo Datepicker::widget([
@@ -107,8 +110,10 @@ $this->params['breadcrumbs'][] = $this->title;
         }
     }
 
-
-
+    if($noedit!=1){
+    echo "<div class='send btn btn-success' onclick='check();'>Отправить</div>";
+    }
+    echo "<div><b style='font-size: 18px;color: red;'>".number_format(($sel2*100/$sel1), 2)."%</b></div>";
     ?>
 </div>
 <script>
@@ -118,7 +123,7 @@ $this->params['breadcrumbs'][] = $this->title;
             url: '<?=Yii::$app->urlManager->createUrl(['checklist/updateval']);?>?id_user=<?php echo $user_id;?>&id_project=<?php echo $project_id;?>&date=<?php echo date("d.m.Y");?>&id='+id,
             dataType: 'html',
             success: function(h) {
-                alert(h);
+                //alert(h);
 
                 if( $("#bl"+id).find('input:checkbox').is(":checked")){
                     $( "#bl"+id ).addClass( "checkok" );
@@ -131,5 +136,57 @@ $this->params['breadcrumbs'][] = $this->title;
             }
         });
     }
+    function check(){
+        $(".check-list-index  :input[type=checkbox]").each(function(){
+            if( $(this).is(":checked")){
+                //alert('ok');
+            } else{
+                var i=$(this).parent().attr('rel');
+                var i2=$(this).parent().find('#t_add').val();
+                var i3=$(this).parent().find('#t_add_cat').val();
+                if(i2!=1){
+                    $( "<div class='sendform'>Тип Заявки:" +
+                    "<select name='severity' class='severity-"+i+"'>" +
+                    "<option value='1'>Авария</option>" +
+                    "<option value='2'>Срочные</option>" +
+                    "<option value='3'>Плановые</option>" +
+                    "</select><br>" +
+                    "<a class='addlast' href=\"#\" onclick='setlast("+i+", "+i3+"); return false;'>добавить последнюю запись</a>	" +
+                    "<textarea class='textar t-"+i+"'></textarea><div class='savecom  btn btn-success' onclick='savecom("+i+", "+i3+");'>Отправить заявку</div></div>" ).insertAfter($(this).parent().find('span'));
+                }
+            }
 
+        });
+    }
 </script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+<div id="chart" style="height: 250px;"></div>
+<script>
+    new Morris.Line({
+        element: 'chart',
+        data: [
+            <?php
+           $dayofmonth = date('t');
+           for($i = 1; $i < $dayofmonth; $i++)
+           {
+           echo "{date: '".date('Y')."-".date('m')."-".$i."', value: ".$i."%},";
+           }
+           ?>
+        ],
+        xkey: 'date',
+        ykeys: ['value'],
+        xLabelFormat: function(date) {
+            return date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear();
+        },
+        xLabels:'day',
+        labels: ['value'],
+        lineWidth: 2,
+        dateFormat: function(date) {
+            d = new Date(date);
+            return d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear();
+        },
+    });
+</script>
+

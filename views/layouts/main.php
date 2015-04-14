@@ -5,7 +5,6 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use app\models\Objects;
-use dektrium\user\models\User;
 /* @var $this //\yii\web\View */
 /* @var $content string */
 
