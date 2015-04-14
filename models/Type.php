@@ -42,3 +42,4 @@ class Type extends \yii\db\ActiveRecord
         ];
     }
 }
+

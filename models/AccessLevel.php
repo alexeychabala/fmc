@@ -42,3 +42,4 @@ class AccessLevel extends \yii\db\ActiveRecord
         ];
     }
 }
+

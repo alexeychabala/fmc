@@ -248,3 +248,4 @@ class Objects extends \yii\db\ActiveRecord
         return $users;
     }
 }
+

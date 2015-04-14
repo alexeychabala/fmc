@@ -42,3 +42,4 @@ class Status extends \yii\db\ActiveRecord
         ];
     }
 }
+

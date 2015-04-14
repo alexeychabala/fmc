@@ -67,3 +67,4 @@ class ItemsSearch extends Model
         return $dataProvider;
     }
 }
+

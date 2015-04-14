@@ -81,3 +81,4 @@ class CheckList extends \yii\db\ActiveRecord
         return 'test'.$ob['id'];
     }
 }
+

@@ -5,10 +5,13 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use app\models\Objects;
+use dektrium\user\models\User;
 /* @var $this //\yii\web\View */
 /* @var $content string */
 
 AppAsset::register($this);
+isset(Yii::$app->user->identity->id_access_level)?$id_access_level=Yii::$app->user->identity->id_access_level:$id_access_level='';
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -59,7 +62,7 @@ AppAsset::register($this);
 
             NavBar::end();
 
-        if(Yii::$app->user->identity->id_access_level==90) {
+        if($id_access_level==90) {
             NavBar::begin([
                 'options' => [
                     'class' => 'navbar-inverse navbar-admin',
@@ -76,9 +79,9 @@ AppAsset::register($this);
             NavBar::end();
         }
 
-        if(Yii::$app->user->identity->id_access_level>0){
+        if($id_access_level>0){
         ?>
-        <div class="bl-div <?php if(Yii::$app->user->identity->id_access_level==90) {echo " admin-top";}?>">
+        <div class="bl-div <?php if($id_access_level==90) {echo " admin-top";}?>">
 
         <?php
         if(Yii::$app->request->post('obj')>0) {
@@ -100,7 +103,7 @@ AppAsset::register($this);
         ?>
 
         <div class="container">
-            <?php if(Yii::$app->user->identity->id_access_level>0){
+            <?php if($id_access_level>0){
                 echo Breadcrumbs::widget([
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 ]);

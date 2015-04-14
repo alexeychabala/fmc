@@ -1,5 +1,4 @@
 <?php
-
 use yii\helpers\Html;
 use app\models\Category;
 use app\models\CheckList;
