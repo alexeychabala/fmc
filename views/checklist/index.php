@@ -82,27 +82,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     //while ($myrow = mysql_fetch_array($resultprg)) {
                     //    echo "<div class='nevpr'>".$myrow['summary']."&nbsp;<a href='/view.php?id=".$myrow['id']."'>перейти</a></div>";
                     //}
+                   // listnotready
 
-                    if (isset($rowch[$rowc['id']]['coment'])) {
-                        if ($rowch[$rowc['id']]['coment'] != '') {
-
-                            echo "<input type='hidden' id='t_add' value='1'><div style='clear:both;'></div>
-
-                            Тип Заявки:
-                            <select name=\"severity\" class=\"severity-" . $rowc['id'] . "\">
-                            <option value=\"10\">Авария</option>
-                            <option value=\"20\">Срочные</option>
-                            <option value=\"30\">Плановые</option>
-                            </select>
-                            <br><br>
-
-                            <textarea class='textar t-" . $rowc['id'] . "'>" . $rowch[$rowc['id']]['coment'] . "</textarea>";
-                            if ($noedit != 1) {
-                                if ($rowch[$rowc['id']]['coment'] == '')
-                                    echo "<div class='savecom savecom" . $rowc['id'] . "' onclick='savecom(" . $rowc['id'] . ", '" . $rowc3['id'] . "');'>Отправить заявку</div>";
+                    if(isset($listnotready)){
+                        foreach($listnotready as $val) {
+                            if($val['id_category_child']==$rowc['id']) {
+                                echo "<div class='nevpr'>".$val['name']."&nbsp;<a href='".Yii::$app->urlManager->createUrl(['items/update'])."?id=".$val['id']."'>перейти</a></div>";
                             }
                         }
                     }
+
+
                     ?>
                 </div>
             <?php
@@ -151,12 +141,28 @@ $this->params['breadcrumbs'][] = $this->title;
                     "<option value='2'>Срочные</option>" +
                     "<option value='3'>Плановые</option>" +
                     "</select><br>" +
-                    "<a class='addlast' href=\"#\" onclick='setlast("+i+", "+i3+"); return false;'>добавить последнюю запись</a>	" +
                     "<textarea class='textar t-"+i+"'></textarea><div class='savecom  btn btn-success' onclick='savecom("+i+", "+i3+");'>Отправить заявку</div></div>" ).insertAfter($(this).parent().find('span'));
                 }
             }
 
         });
+    }
+    function savecom(id, idcat){
+        var coment=$(".t-"+id).val();
+        var severity=$(".severity-"+id+" option:selected").val();
+
+        $.post( '<?=Yii::$app->urlManager->createUrl(['checklist/updatevalitem']);?>?id_user=<?php echo $user_id;?>&id_project=<?php echo $project_id;?>&id='+id,
+            { coment: coment, severity:severity, idcat:idcat })
+            .done(function( h ) {
+                alert('Обновлено');
+                if( $("#bl"+id).find('input:checkbox').is(":checked")){
+                    $( "#bl"+id+" .savecom").hide();
+                    //$( "#bl"+id ).addClass( "checkok" );
+                }else{
+                    //$( "#bl"+id ).removeClass( "checkok" )
+                    $( "#bl"+id+" .savecom").hide();
+                }
+            });
     }
 </script>
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
@@ -169,24 +175,25 @@ $this->params['breadcrumbs'][] = $this->title;
         data: [
             <?php
            $dayofmonth = date('t');
-           for($i = 1; $i < $dayofmonth; $i++)
+           foreach($listgrafik as $val)
            {
-           echo "{date: '".date('Y')."-".date('m')."-".$i."', value: ".$i."%},";
+           $d=explode('.', $val['date']);
+           $v=number_format(($val['count_']*100/$itemsgrafikall), 2);
+           echo "{date: '".$d[2]."-".$d[1]."-".$d[0]."', value: ".$v."},";
            }
            ?>
         ],
         xkey: 'date',
         ykeys: ['value'],
         xLabelFormat: function(date) {
-            return date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear();
+            return date.getDate()+'.'+(date.getMonth())+'.'+date.getFullYear();
         },
         xLabels:'day',
-        labels: ['value'],
+        labels: ['Значение, %'],
         lineWidth: 2,
         dateFormat: function(date) {
             d = new Date(date);
-            return d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear();
-        },
+            return d.getDate()+'.'+(d.getMonth())+'.'+d.getFullYear();
+        }
     });
 </script>
-

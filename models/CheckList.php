@@ -80,5 +80,54 @@ class CheckList extends \yii\db\ActiveRecord
         }
         return 'test'.$ob['id'];
     }
+    public function update_data_item($id_user, $id_project, $id_list, $date, $coment,  $severity)
+    {
+            $model = YII::$app->db->createCommand("SELECT * FROM category where id='".$id_list."'");
+            $r = $model->queryOne();
+            Yii::$app->db->createCommand()->insert('items', [
+                'name' => $coment,
+                'id_category' => $r['parentid'],
+                'id_category_child' => $id_list,
+                'id_type' => $severity,
+                'status' => 1,
+                'user_create' => $id_user,
+                'id_object' => $id_project,
+                'date_create'=> strtotime(date("Y-m-d H:i:s")),
+                'date_update'=> strtotime(date("Y-m-d H:i:s")),
+            ])
+                ->execute();
+
+        return '';
+    }
+
+    public function itemsdontready()
+    {
+        $project_id=Yii::$app->request->cookies->get('default_obj');
+        //$model = YII::$app->db->createCommand("SELECT * FROM  items where id_object='".$project_id."' and status<6 order by name");
+       // $list = $model->queryAll();
+        //return $list;
+
+        $ob = Items::find()->where("id_object='".$project_id."' and status<6 and id_category_child>0")->asArray()->all();
+        return $ob;
+    }
+
+    public function itemsgrafik()
+    {
+        $project_id=Yii::$app->request->cookies->get('default_obj');
+        $model = YII::$app->db->createCommand("SELECT COUNT(  `id` ) AS count_,  `date`  FROM `checklist` WHERE `date` like '%.".date("m").'.'.date("Y")."' and id_project='".$project_id."' GROUP BY  `date` ");
+        //echo "SELECT * FROM `checklist` WHERE `date` like '%.".date("m").'.'.date("Y")."' and id_project='".$project_id."'";
+        //exit;
+        $list = $model->queryAll();
+        return $list;
+    }
+    public function itemsgrafikall()
+    {
+        $project_id=Yii::$app->request->cookies->get('default_obj');
+        $model = YII::$app->db->createCommand("SELECT count(a.id) as count_ FROM category a, categoryobjects b where a.parentid>0 and a.id=b.id_category and b.id_object='".$project_id."'");
+        //echo "SELECT * FROM `checklist` WHERE `date` like '%.".date("m").'.'.date("Y")."' and id_project='".$project_id."'";
+        //exit;
+        $list = $model->queryOne();
+        return $list['count_'];
+    }
 }
 
